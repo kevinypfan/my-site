@@ -3,14 +3,14 @@ const siteMetadata = {
   title: "KevinFan's Blog",
   author: 'Kevin Fan',
   headerTitle: '~/kevinfan',
-  description: 'A blog created with Next.js and Tailwind.css',
-  language: 'zh-tw',
+  description: '記載著 Kevin Fan 的學習心得與技術筆記',
+  language: 'zh-Hant-TW',
   theme: 'system', // system, dark or light
   siteUrl: 'https://blog.kevinfan.me',
   siteRepo: 'https://github.com/kevinypfan/my-site',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
-  socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
-  mastodon: 'https://mastodon.social/@mastodonuser',
+  socialBanner: `${process.env.BASE_PATH || ''}/static/images/social-banner.png`,
+  // mastodon: 'https://mastodon.social/@mastodonuser',
   email: 'kevinypfan@gmail.com',
   github: 'https://github.com/kevinypfan',
   linkedin: 'https://www.linkedin.com/in/%E6%8C%AF%E5%93%B2-%E8%8C%83-b45a0a151/',
@@ -18,28 +18,21 @@ const siteMetadata = {
   // twitter: 'https://twitter.com/Twitter',
   // facebook: 'https://facebook.com',
   // youtube: 'https://youtube.com',
+  // linkedin: 'https://www.linkedin.com',
   // threads: 'https://www.threads.net',
   // instagram: 'https://www.instagram.com',
-  // medium: 'https://medium.com',
-  // bluesky: 'https://bsky.app/',
   locale: 'zh-TW',
-  // set to true if you want a navbar fixed to the top
-  stickyNav: false,
+  multiauthors: false,
   analytics: {
     // If you want to use an analytics provider you have to add it to the
     // content security policy in the `next.config.js` file.
     // supports Plausible, Simple Analytics, Umami, Posthog or Google Analytics.
-    umamiAnalytics: {
+    /*umamiAnalytics: {
       // We use an env variable for this site to avoid other users cloning our analytics ID
       umamiWebsiteId: process.env.NEXT_UMAMI_ID, // e.g. 123e4567-e89b-12d3-a456-426614174000
-      // You may also need to overwrite the script if you're storing data in the US - ex:
-      // src: 'https://us.umami.is/script.js'
-      // Remember to add 'us.umami.is' in `next.config.js` as a permitted domain for the CSP
-    },
+    },*/
     // plausibleAnalytics: {
     //   plausibleDataDomain: '', // e.g. tailwind-nextjs-starter-blog.vercel.app
-    // If you are hosting your own Plausible.
-    //   src: '', // e.g. https://plausible.my-domain.com/js/script.js
     // },
     // simpleAnalytics: {},
     // posthogAnalytics: {
@@ -50,10 +43,11 @@ const siteMetadata = {
     // },
   },
   newsletter: {
-    // supports mailchimp, buttondown, convertkit, klaviyo, revue, emailoctopus, beehive
+    // supports mailchimp, buttondown, convertkit, klaviyo, revue, emailoctopus
     // Please add your .env file and modify it according to your selection
     provider: 'emailoctopus',
   },
+  iscomments: true,
   comments: {
     // If you want to use an analytics provider you have to add it to the
     // content security policy in the `next.config.js` file.
@@ -87,7 +81,7 @@ const siteMetadata = {
   search: {
     provider: 'kbar', // kbar or algolia
     kbarConfig: {
-      searchDocumentsPath: `${process.env.BASE_PATH || ''}/search.json`, // path to load documents to search
+      searchDocumentsPath: 'search.json', // path to load documents to search
     },
     // provider: 'algolia',
     // algoliaConfig: {
@@ -98,6 +92,13 @@ const siteMetadata = {
     //   indexName: 'docsearch',
     // },
   },
+  // formspree support :
+  //if set to false, simple "mailto"
+  // if set to true, get a free account there : https://formspree.io/ and go to read.me doc
+  formspree: false,
+  // waline support
+  iswaline: false,
+  walineServer: '',
 }
 
 module.exports = siteMetadata

@@ -1,0 +1,30 @@
+{
+  "greeting": "最新文章",
+  "description": "記載著 Kevin Fan 的學習心得與技術筆記",
+  "more": "閱讀更多",
+  "all": "所有文章",
+
+  "moreaboutme": "更多關於我",
+
+  "featured": "精選",
+  "morefeatured": "更多精選文章",
+  "morerecent": "更多最新文章",
+
+  "search": "搜索",
+  "searchposts": "搜索文章",
+  "comment": "加載評論",
+  "pub": "發布於",
+  "authors": "作者",
+  "name": "名稱",
+  "nexta": "下一篇文章",
+  "preva": "上一篇文章",
+  "nextp": "下一頁",
+  "prevp": "上一頁",
+  "of": "的",
+  "back": "返回",
+  "twitter": "在 Twitter 上討論",
+  "github": "在 GitHub 上查看",
+  "draft": "草稿",
+  "noposts": "未找到文章",
+  "poststagged": "查看標記的文章"
+}

@@ -1,337 +1,842 @@
-![tailwind-nextjs-banner](/public/static/images/twitter-card.png)
+🙋‍♂️ I'm open for freelance offers.
 
-# Tailwind Nextjs Starter Blog
+💫If you don't need a freelancer, a small tip will still be appreciated, so I'll be able to create more repositories (or improve the existing ones) and spend some time to help the community! 
 
-[![GitHub Repo stars](https://img.shields.io/github/stars/timlrx/tailwind-nextjs-starter-blog?style=social)](https://GitHub.com/timlrx/tailwind-nextjs-starter-blog/stargazers/)
-[![GitHub forks](https://img.shields.io/github/forks/timlrx/tailwind-nextjs-starter-blog?style=social)](https://GitHub.com/timlrx/tailwind-nextjs-starter-blog/network/)
-[![Twitter URL](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2Ftimlrxx)](https://twitter.com/timlrxx)
-[![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&link=https://github.com/sponsors/timlrx)](https://github.com/sponsors/timlrx)
+The other way to support me, is to buy me some artworks, thank you!
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/timlrx/tailwind-nextjs-starter-blog)
+IMPORTANT NOTE: 
 
-This is a [Next.js](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/) blogging starter template. Version 2 is based on Next App directory with [React Server Component](https://nextjs.org/docs/getting-started/react-essentials#server-components) and uses [Contentlayer](https://www.contentlayer.dev/) to manage markdown content.
+This is still a WIP (Work In Progress).
 
-Probably the most feature-rich Next.js markdown blogging template out there. Easily configurable and customizable. Perfect as a replacement to existing Jekyll and Hugo individual blogs.
+I recently changed all the complex server logic for pagination and tags, with the use of Zustand library, and moved it all to two components (pagination, and ListLayout)
+While it's not optimal for SEO purposes, the goal of these changes is to find a solution for managing all the url in a better way (translated urls are very bad for SEO)
+Also, I don't think that the impact of these first changes is really bad for SEO, because most users will use this repository and code for their personal dev blog.
 
-Check out the documentation below to get started.
+So for now, blog page and tags logic is entirely managed on client side (also resulting in a faster UI for users). This also means less complex server side code and pages.
 
-Facing issues? Check the [FAQ page](https://github.com/timlrx/tailwind-nextjs-starter-blog/wiki) and do a search on past issues. Feel free to open a new issue if none has been posted previously.
+sitemap.xml and robots.txt are now handled perfectly. I made all the necessary changes, next step is to fix rss.
 
-Feature request? Check the past discussions to see if it has been brought up previously. Otherwise, feel free to start a new discussion thread. All ideas are welcomed!
+How can YOU help? You can help this project by making PR. I need help to optimize the performances on mobile
 
-## Variations
+## Introduction
 
-**Note**: These are community contributed forks using different frameworks or with significant changes to the codebase - not officially supported.
+In this post we will discuss the i18n implementation and how it changes compared to the original V.2.
+For a better understanding of the basic functionalities, you will need to consult the other posts, or the original documentation
+on [timlrx](https://github.com/timlrx/tailwind-nextjs-starter-blog) github.
 
-Astro alternative - [Tailwind Astro Template](https://github.com/wanoo21/tailwind-astro-starting-blog).
+Using the repo? Let me know and I'll start a list if you want your own blog listed there.
 
-Remix-run alternative - [Tailwind Remix-run Starter Blog Template](https://github.com/SangeetAgarwal/tailwind-remix-run-mdxjs-typescript-starter-blog).
-
-Internationalization support - [Template with i18n](https://tailwind-nextjs-starter-blog-i18n.vercel.app/) and [source code](https://github.com/PxlSyl/tailwind-nextjs-starter-blog-i18n/tree/main).
-
-## Examples V2
-
-- [Demo Blog](https://tailwind-nextjs-starter-blog.vercel.app/) - this repo
-- [My personal blog](https://www.timlrx.com) - modified to auto-generate blog posts with dates
-- [Karhdo's Blog](https://karhdo.dev) - Karhdo's Blog - Karhdo's Coding Adventure ([source code](https://github.com/Karhdo/karhdo.dev))
-- [ben.codes blog](https://ben.codes) - Benoit's personal blog about software development ([source code](https://github.com/bendotcodes/bendotcodes))
-- [tsix blog](https://tsix.top) - A front-end engineer is used to record some knowledge points in work and study _中文_
-- [SOTO's Blog](https://www.atksoto.com/) - A more personalized personal website upgraded from V1 ([source code](https://github.com/acsoto/soto-blog-nextjs))
-- [Prabhu's Blog](https://prabhukirankonda.vercel.app) - Prabhu's Personal website with blog ([source code](https://github.com/prabhukiran8790/prabhukirankonda))
-- [Rabby Hasan's Blog](https://blog.rabbyhasan.com.bd/) - Rabby Hasan's personal blog about full stack development with cloud ([source code](https://github.com/rabbyalone/myblog))
-- [enscribe.dev](https://enscribe.dev) - enscribe's personal blog; cybersecurity shenanigans, frontend webdev, etc. ([source code](https://github.com/jktrn/enscribe.dev))
-- [dalelarroder.com](https://dalelarroder.com) - Dale Larroder's personal website upgraded from V1 ([source code](https://github.com/dlarroder/dalelarroder))
-- [thetalhatahir.com](https://www.thetalhatahir.com) - Talha Tahir's personal blog. Added article thumbnails, linkedIn card, Beautiful hero content, technology emoticons.
-- [homing.so](https://homing.so) - Homing's personal blog about the stuff he's learning ([source code](https://github.com/hominsu/blog))
-- [zS1m's Blog](https://contrails.space) - zS1m's personal blog for recording and sharing daily learning technical content ([source code](https://github.com/zS1m/nextjs-contrails))
-- [dariuszwozniak.net](https://dariuszwozniak.net/) - Software development blog ([source code](https://github.com/dariusz-wozniak/dariuszwozniak.net-v2))
-- [dreams.plus](https://dreams.plus) - Blog site for some thoughts and records for life and technology.
-- [francisaguilar.co blog](https://francisaguilar.co) - Francis Aguilar's personal blog that talks about tech, fitness, and personal development.
-- [Min71 Dev Blog](https://min71.dev) - Personal blog about Blockchain, Development and etc. ([source code](https://github.com/mingi3442/blog))
-- [Bryce Yu's Blog](https://earayu.github.io/) - Bryce Yu's personal Blog about distributed system, database, and web development. ([source code](https://github.com/earayu/earayu.github.io))
-- [Remote Startup Senpai Anime Series Website](https://remote-startup-senpai.com) - Landing page for the anime series Remote Startup Senpai.
-- [Secret Base](https://www.jachsu.com/) - Jac Hsu's personal Blog.talks about tech, thought, and life in general.
-- [Zsebinformatikus](https://www.zsebinformatikus.hu/) - The information superhighway guide blog.
-- [Anton Morgunov's Blog](https://blog.ischemist.com/) - talking about science without oversimplifications or why theoretical and computational chemistry is cool.
-- [Hans Blog](https://www.hansking.cn/) - Hans' personal blog, front-end technology, gallery and travel diary 中文. ([source code](https://github.com/hansking98/hans-nextjs-blog))
-- [CuB3y0nd's Portfolio](https://www.cubeyond.net/) - CuB3y0nd‘s cyber security study notes「中文」
-- [London Tech Talk](https://london-tech-talk.com/) - A podcast exploring technology trends and expatriate living experiences. - 日本語
-- [CRUD Flow Blog](http://blog.ndamulelo.co.za/) - A technical blog about AI, Cloud Engineering, Data Science and Personal development
-- [Trillium's Blog](https://trilliumsmith.com/) - Modified to render resume pdf on `/resume` page. ([source code](https://github.com/trillium/trilliumsmith.com))
-- [Frank's Tech Blog](https://frank-tech-blog.vercel.app/) - Frank's personal blog about software development and technology. ([source code](https://github.com/frank-mendez/frank-blog))
-- [Wujie's Blog: 旅行者计划](https://www.wujieli.com/) - Wujie's personal digital garden ([source code](https://github.com/wujieli0207/wujie-blog-next))
-- [Xiaodong's Blog](https://blog.linxiaodong.com) - Xiaodong's personal blog about front-end technology, and life. 「中文」([source code](https://github.com/buxuku/buxuku.github.io))
-- [Azurtelier.com](https://www.azurtelier.com/) - Amos's personal website for tech, music, AI illustrations, etc. [English/中文] ([Source code](https://github.com/AmosChenZixuan/Azurtelier.com))
-- [JoshHaines.com](https://www.JoshHaines.com/) - Personal website for Josh Haines. ([source code](https://github.com/jdhaines/joshhaines))
-- - [Jigu's Blog](https://animeirl.top) - Jigu's personal blog about tech, crypto, golang, and life. 「中文」
-- [andrewsam.xyz](https://www.andrewsam.xyz/) - Andrew's Personal website using ShadCN, Prisma, MongoDB, Auth.js, Resume Page, Custom Experience timeline and technologies components. ([source code](https://github.com/andrew-sameh/andrewsam.xyz))
-- [Rulli Damara Putra's Portfolio](https://www.damaraputra.my.id/) - Rully's personal blog and portfolio.
-- [blog.taoluyuan.com 套路猿](https://blog.taoluyuan.com) - A personal tech blog that supports multi-theme switching. 「中英」
-- [LyricsDecode.com](https://lyricsdecode.com) - A song lyrics website offering original lyrics, Romanisation, and English translations with customisable viewing options.
-- [bmacharia.com](https://bmacharia.com/) - Benson Macharia's technical blog about Cybersecurity and IT Risk Management.
-- [armujahid.me](https://armujahid.me/) - Abdul Rauf's personal blog about tech and random stuff.
-- [leohuynh.dev](leohuynh.dev) - 🇻🇳 Leo's dev blog – stories, insights, and ideas. Add `/snippets`, `/books` pages, add `ProfileCard`, `CareerTimeline` components and many more.
-- [OpenSats Blog](https://opensats.org/blog) - A 501(c)(3) public charity which aims to sustainably fund free and open-source projects. ([source code](https://github.com/OpenSats/website))
-- [Schedles Blog](https://schedles.com/blog) - Social media scheduling tips, strategies, and product updates for content creators. ([Project Link](https://schedles.com))
-- [YawDev Blog](https://yawdev.org/blog) - IT-Agency / Software Development. Blog about tech and business ([Project Link](https://yawdev.org))
-- [Engineering Notes](https://www.jonvet.com) - Jonas Vetterle Personal Website & Blog. I'm writing articles about software engineering that interest me, including AI and Quantum Computing
-- [Screenager.dev](https://screenager.vercel.app) - Personal Website as Portfolio & Blog. Documenting my learning journey and some guides.
-- [kezhenxu94's blog](https://kezhenxu94.me) - Blogging about dev, tips & tricks, tutorials and more.
-
-Using the template? Feel free to create a PR and add your blog to this list.
-
-## Examples V1
-
-[v1-blogs-showcase.webm](https://github.com/timlrx/tailwind-nextjs-starter-blog/assets/28362229/2124c81f-b99d-4431-839c-347e01a2616c)
-
-Thanks to the community of users and contributors to the template! We are no longer accepting new blog listings over here. If you have updated from version 1 to version 2, feel free to remove your blog from this list and add it to the one above.
-
-- [Aloisdg's cookbook](https://tambouille.vercel.app/) - with pictures and recipes!
-- [GautierArcin's demo with next translate](https://tailwind-nextjs-starter-blog-seven.vercel.app/) - includes translation of mdx posts, [source code](https://github.com/GautierArcin/tailwind-nextjs-starter-blog/tree/demo/next-translate)
-- [David Levai's digital garden](https://davidlevai.com/) - customized design and added email subscriptions
-- [thvu.dev](https://thvu.dev) - Added `mdx-embed`, view count, reading minutes and more.
-- [irvin.dev](https://www.irvin.dev/) - Irvin Lin's personal site. Added YouTube embedding.
-- [KirillSo.com](https://www.kirillso.com/) - Personal blog & website.
-- [slightlysharpe.com](https://slightlysharpe.com) - [Tincre's](https://tincre.com) main company blog
-- [blog.b00st.com](https://blog.b00st.com) - [b00st.com's](https://b00st.com) main music promotion blog
-- [astrosaurus.me](https://astrosaurus.me/) - Ephraim Atta-Duncan's Personal Blog
-- [dhanrajsp.me](https://dhanrajsp.me/) - Dhanraj's personal site and blog.
-- [blog.r00ks.io](https://blog.r00ks.io/) - Austin Rooks's personal blog ([source code](https://github.com/Austionian/blog.r00ks)).
-- [honghong.me](https://honghong.me) - Tszhong's personal website ([source code](https://github.com/tszhong0411/home))
-- [marceloformentao.dev](https://marceloformentao.dev) - Marcelo Formentão personal website ([source code](https://github.com/marceloavf/marceloformentao.dev)).
-- [abiraja.com](https://www.abiraja.com/) - with a [runnable JS code snippet component!](https://www.abiraja.com/blog/querying-solana-blockchain)
-- [bpiggin.com](https://www.bpiggin.com) - Ben Piggin's personal blog
-- [maqib.cn](https://maqib.cn) - A blog of Chinese front-end developers 狂奔小马的博客 ([源码](https://github.com/maqi1520/nextjs-tailwind-blog))
-- [ambilena.com](https://ambilena.com/) - Electronic Music Blog & imprint for upcoming musicians.
-- [0xchai.io](https://0xchai.io) - Chai's personal blog
-- [techipedia](https://techipedia.vercel.app) - Simple blogging progressive web app with custom installation button and top progress bar
-- [reubence.com](https://reubence.com) - Reuben Rapose's Digital Garden
-- [axolo.co/blog](https://axolo.co/blog) - Engineering management news & axolo.co updates (with image preview for article in the home page)
-- [musing.vercel.app](https://musing.vercel.app/) - Parth Desai's personal blog ([source code](https://github.com/pycoder2000/blog))
-- [onyourmental.com](https://www.onyourmental.com/) - [Curtis Warcup's](https://github.com/Cwarcup) website for the On Your Mental Podcast ([source code](https://github.com/Cwarcup/on-your-mental))
-- [cwarcup.com](https://www.cwarcup.com/) - Curtis Warcup's personal website and blog ([source code](https://github.com/Cwarcup/personal-blog)).
-- [ondiek-elijah.me](https://www.ondiek-elijah.me/) - Ondiek Elijah's website and blog ([source code](https://github.com/Dev-Elie/ondiek-elijah)).
-- [jmalvarez.dev](https://www.jmalvarez.dev/) - José Miguel Álvarez's personal blog ([source code](https://github.com/josemiguel-alvarez/nextjs-blog))
-- [justingosses.com](https://justingosses.com/) - Justin Gosses's personal website and blog ([source code](https://github.com/JustinGOSSES/justingosses-website))
-- [https://bitoflearning-9a57.fly.dev/](https://bitoflearning-9a57.fly.dev/) - Sangeet Agarwal's personal blog, replatformed to [remix](https://remix.run/remix) using the [indie stack](https://github.com/remix-run/indie-stack) ([source code](https://github.com/SangeetAgarwal/bitoflearning))
-- [raphaelchelly.com](https://www.raphaelchelly.com/) - Raphaël Chelly's personal website and blog ([source code](https://github.com/raphaelchelly/raph_www))
-- [kaveh.page](https://kaveh.page) - Kaveh Tehrani's personal blog. Added tags directory, profile card, time-to-read on posts directory, etc.
-- [drakerossman.com](https://drakerossman.com/) - Drake Rossman's blog about NixOS, Rust, Software Architecture and Engineering Management, as well as general musings.
-- [meamenu.com](https://www.meamenu.com) - Landing page and product blog starting from this template. It also uses [framer-motion](https://www.framer.com/motion) for animations, custom layout templates, [waline](https://waline.js.org/en/) for blog comments and [primereact](https://primereact.org/) forms [Ita]
-- [giovanni.orciuolo.it](https://giovanni.orciuolo.it) - Giovanni Orciuolo's personal website, blog and everything nerd.
+If you find this project useful, please give it a ⭐ to show your support.
 
 ## Motivation
 
-I wanted to port my existing blog to Nextjs and Tailwind CSS but there was no easy out of the box template to use so I decided to create one. Design is adapted from [Tailwindlabs blog](https://github.com/tailwindlabs/blog.tailwindcss.com).
+The original model is amazing, and all major credits for it go to its creator @Timlrx. I was using V.1 of the i18n version, which was rather complicated to use and which it seems that the creator has unfortunately abandoned. So this is my participation and my donation to the community!
 
-I wanted it to be nearly as feature-rich as popular blogging templates like [beautiful-jekyll](https://github.com/daattali/beautiful-jekyll) and [Hugo Academic](https://github.com/wowchemy/wowchemy-hugo-modules) but with the best of React's ecosystem and current web development's best practices.
+Also, I am currently redesigning my own website, which uses the router page, and part of the code for the internationalized blog of V.1.
+I wanted to migrate to the app router, but for that, I first had to learn how to internationalize a site with the router app, so I took this repository as training.
 
-## Features
+I love the idea of helping other developers to quickly start sharing their precious knowledge with the whole world, making the internet better, whether in their native language, or in English 😌
 
-- Next.js with Typescript
-- [Contentlayer](https://www.contentlayer.dev/) to manage content logic
-- Easy styling customization with [Tailwind 3.0](https://tailwindcss.com/blog/tailwindcss-v3) and primary color attribute
-- [MDX - write JSX in markdown documents!](https://mdxjs.com/)
-- Near perfect lighthouse score - [Lighthouse report](https://www.webpagetest.org/result/230805_BiDcBQ_4H7)
-- Lightweight, 85kB first load JS
-- Mobile-friendly view
-- Light and dark theme
-- Font optimization with [next/font](https://nextjs.org/docs/app/api-reference/components/font)
-- Integration with [pliny](https://github.com/timlrx/pliny) that provides:
-  - Multiple analytics options including [Umami](https://umami.is/), [Plausible](https://plausible.io/), [Simple Analytics](https://simpleanalytics.com/), Posthog and Google Analytics
-  - Comments via [Giscus](https://github.com/laymonage/giscus), [Utterances](https://github.com/utterance/utterances) or Disqus
-  - Newsletter API and component with support for Mailchimp, Buttondown, Convertkit, Klaviyo, Revue, Emailoctopus and Beehiiv
-  - Command palette search with [Kbar](https://github.com/timc1/kbar) or Algolia
-- Server-side syntax highlighting with line numbers and line highlighting via [rehype-prism-plus](https://github.com/timlrx/rehype-prism-plus)
-- Math display supported via [KaTeX](https://katex.org/)
-- Citation and bibliography support via [rehype-citation](https://github.com/timlrx/rehype-citation)
-- [Github alerts](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts) via [remark-github-blockquote-alert](https://github.com/jaywcjlove/remark-github-blockquote-alert)
-- Automatic image optimization via [next/image](https://nextjs.org/docs/basic-features/image-optimization)
-- Support for tags - each unique tag will be its own page
-- Support for multiple authors
-- 3 different blog layouts
-- 2 different blog listing layouts
-- Support for nested routing of blog posts
-- Projects page
-- Preconfigured security headers
-- SEO friendly with RSS feed, sitemaps and more!
+I also designed a much more complete template for artists, content creators and developers, which I m'using for my own site and which is available here :
 
-## Sample posts
+Normal version :
 
-- [A markdown guide](https://tailwind-nextjs-starter-blog.vercel.app/blog/github-markdown-guide)
-- [Learn more about images in Next.js](https://tailwind-nextjs-starter-blog.vercel.app/blog/guide-to-using-images-in-nextjs)
-- [A tour of math typesetting](https://tailwind-nextjs-starter-blog.vercel.app/blog/deriving-ols-estimator)
-- [Simple MDX image grid](https://tailwind-nextjs-starter-blog.vercel.app/blog/pictures-of-canada)
-- [Example of long prose](https://tailwind-nextjs-starter-blog.vercel.app/blog/the-time-machine)
-- [Example of Nested Route Post](https://tailwind-nextjs-starter-blog.vercel.app/blog/nested-route/introducing-multi-part-posts-with-nested-routing)
+- [Pablo Pikassiet Next Starter](https://github.com/PxlSyl/pablo-pikassiet-next-starter)
 
-## Quick Start Guide
+I18 version :
 
-1. Clone the repo
+- [Pablo Pikassiet Next Starter I18n](https://github.com/PxlSyl/pablo-pikassiet-next-starter-i18n)
 
-```bash
-npx degit 'timlrx/tailwind-nextjs-starter-blog'
-```
+My own website based on this new template :
 
-2. Personalize `siteMetadata.js` (site related information)
-3. Modify the content security policy in `next.config.js` if you want to use
-   other analytics provider or a commenting solution other than giscus.
-4. Personalize `authors/default.md` (main author)
-5. Modify `projectsData.ts`
-6. Modify `headerNavLinks.ts` to customize navigation links
-7. Add blog posts
-8. Deploy on Vercel
+- [PxlSyl.art](https://www.pxlsyl.art/)
 
-## Installation
+# Changes:
 
-```bash
-yarn
-```
+## New features
 
-Please note, that if you are using Windows, you may need to run:
+This repository will sometimes be updated with new features (not present in the original repository)
+All this can sometimes seem obsessive regarding the UI and details, -maybe too neat or a little overkill- but I also use this repository as a play and learning space.
 
-```bash
-$env:PWD = $(Get-Location).Path
-```
+For now :
+- New "WebsiteEmbed" MDX component : Embed your demo templates from github with ease, and show them on your website! (Don't forget to update your Content Security Policy in the config files of your templates)
+- New "sidetoc" component :  display automatically the table of contents of your posts in a dedicated sidebar.
+- Integration of email, theme, as well as a button to quickly copy the URL of the page you are on, with the kbar palette command.
+The motivation for this is having explored other command palette libraries, with some offering nested elements for 'Actions'. Unfortunately this is not possible with kbar, but it gave me new ideas!
+- Multi-authors feature for "about" section: each author can have it's own about page available inside a dropdown menu on large screens, or displayed directly on small screens. If you want to turn it off and only use the "normal", classical about section, go to sitemetadata.js and set multiauthors to false. In any case, your main author now needs to have the field "default" set to true.
+- Featured section on home page for posts you want to pin to top : set featured to true (max two posts by default, can be modified in Featured.tsx file, in component folder) The program will pick the latest two posts with "featured : true." If no featured posts are available, this section will simply not be displayed!
+- Each tag now has its own pagination! If the number of posts is greater than the one you have defined (by default, set to 5) then a new page is automatically created for subsequent posts including the same tag.
+- Waline comment system now supported! It's probably the best open source comment system right now, with even i18n and many other great features! First, follow [the official tutorial](https://waline.js.org/en/guide/get-started/) to set up the comments database and your vercel server. There's many options available, so take the time to read their documentation. Since it's Vue based, it's still compatible with Next.js, and I created a new comment component. You'll find it in "walinecomponents" folder. I also added a new css file, and you can modify the style here if needed. Once you have deployed your application for comments, modify the sitemetadata.js file. Set "iscomments" property to false, set "iswaline"
+to true and set the url of your comments server accordingly in "walineServer". If your language is not supported by waline, make a PR to their repository or ask them kindly to add your own translation (provide it yourself first). This is what I did for supporting french, and this how we work in open source world!
 
-## Development
+- Series for your posts is now supported, see the deployed demo!
 
-First, run the development server:
+Example of including this new feature : 
 
-```bash
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-Edit the layout in `app` or content in `data`. With live reloading, the pages auto-updates as you edit them.
-
-## Extend / Customize
-
-`data/siteMetadata.js` - contains most of the site related information which should be modified for a user's need.
-
-`data/authors/default.md` - default author information (required). Additional authors can be added as files in `data/authors`.
-
-`data/projectsData.js` - data used to generate styled card on the projects page.
-
-`data/headerNavLinks.js` - navigation links.
-
-`data/logo.svg` - replace with your own logo.
-
-`data/blog` - replace with your own blog posts.
-
-`public/static` - store assets such as images and favicons.
-
-`tailwind.config.js` and `css/tailwind.css` - tailwind configuration and stylesheet which can be modified to change the overall look and feel of the site.
-
-`css/prism.css` - controls the styles associated with the code blocks. Feel free to customize it and use your preferred prismjs theme e.g. [prism themes](https://github.com/PrismJS/prism-themes).
-
-`contentlayer.config.ts` - configuration for Contentlayer, including definition of content sources and MDX plugins used. See [Contentlayer documentation](https://www.contentlayer.dev/docs/getting-started) for more information.
-
-`components/MDXComponents.js` - pass your own JSX code or React component by specifying it over here. You can then use them directly in the `.mdx` or `.md` file. By default, a custom link, `next/image` component, table of contents component and Newsletter form are passed down. Note that the components should be default exported to avoid [existing issues with Next.js](https://github.com/vercel/next.js/issues/51593).
-
-`layouts` - main templates used in pages:
-
-- There are currently 3 post layouts available: `PostLayout`, `PostSimple` and `PostBanner`. `PostLayout` is the default 2 column layout with meta and author information. `PostSimple` is a simplified version of `PostLayout`, while `PostBanner` features a banner image.
-- There are 2 blog listing layouts: `ListLayout`, the layout used in version 1 of the template with a search bar and `ListLayoutWithTags`, currently used in version 2, which omits the search bar but includes a sidebar with information on the tags.
-
-`app` - pages to route to. Read the [Next.js documentation](https://nextjs.org/docs/app) for more information.
-
-`next.config.js` - configuration related to Next.js. You need to adapt the Content Security Policy if you want to load scripts, images etc. from other domains.
-
-## Post
-
-Content is modelled using [Contentlayer](https://www.contentlayer.dev/), which allows you to define your own content schema and use it to generate typed content objects. See [Contentlayer documentation](https://www.contentlayer.dev/docs/getting-started) for more information.
-
-### Frontmatter
-
-Frontmatter follows [Hugo's standards](https://gohugo.io/content-management/front-matter/).
-
-Please refer to `contentlayer.config.ts` for an up to date list of supported fields. The following fields are supported:
-
-```
-title (required)
-date (required)
-tags (optional)
-lastmod (optional)
-draft (optional)
-summary (optional)
-images (optional)
-authors (optional list which should correspond to the file names in `data/authors`. Uses `default` if none is specified)
-layout (optional list which should correspond to the file names in `data/layouts`)
-canonicalUrl (optional, canonical url for the post for SEO)
-```
-
-Here's an example of a post's frontmatter:
-
-```
----
-title: 'Introducing Tailwind Nexjs Starter Blog'
-date: '2021-01-12'
-lastmod: '2021-01-18'
-tags: ['next-js', 'tailwind', 'guide']
+```mdx
+title: Internationalization of V 2.0
+series:
+  order: 4 // You must add a number for the actual order of your post in your series
+  title: "Blog Starter" // You must add the same title to all of your posts from the same series
+date: '2023-11-17'
+lastmod: '2023-11-17'
+language: en
+tags: ['next-js', 'tailwind', 'guide', 'features', 'i18n']
+authors: ['default']
+images: ['/static/images/twitter-card.png']
 draft: false
-summary: 'Looking for a performant, out of the box template, with all the best in web technology to support your blogging needs? Checkout the Tailwind Nextjs Starter Blog template.'
-images: ['/static/images/canada/mountains.jpg', '/static/images/canada/toronto.jpg']
-authors: ['default', 'sparrowhawk']
-layout: PostLayout
-canonicalUrl: https://tailwind-nextjs-starter-blog.vercel.app/blog/introducing-tailwind-nextjs-starter-blog
+summary: Presentation of the Starter Blog Tailwind Next-js v2.0, with addition and support for multiple languages.
+```
+
+- Share component : you or your users can share your blog posts on Facebook, Twitter, Linkedin, WhatsApp, Threads or Telegram with ease! What's a 2024 modern blog without this possibility?
+
+- Smooth page transitions thanks to [Framer Motion](https://github.com/framer/motion) (see the template.tsx file in the app folder and take a look at the following next.js documentation
+  for file functionality [template](https://nextjs.org/docs/app/api-reference/file-conventions/template))
+  I strongly encourage you to experiment with framer-motion and its use within the new
+  router. I also added some Framer Motion flavor to the formspree contact modal, and to the ListLayoutWithTags.tsx component
+
+  Note : the template.tsx file is now removed, because there's performances issues with it. I'll try to implement animations handled in a better way. If you don't care about mobile performance and like this animation, you can stick with it, here's the code :
+
+```ts:template.tsx
+'use client'
+
+import { motion } from 'framer-motion'
+
+const variants = {
+  hidden: { opacity: 0, x: -50, y: 0 },
+  enter: { opacity: 1, x: 0, y: 0 },
+}
+
+export default function Template({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.main
+      variants={variants}
+      initial="hidden"
+      animate="enter"
+      transition={{ type: 'linear' }}
+    >
+      {children}
+    </motion.main>
+  )
+}
+```
+
+- New MDX component: excellent audio player for mdx files (in case you make podcasts, or even music), thanks to [react-h5-audio-player](https://github.com/lhz516/react-h5-audio-player)
+
+- Tailwind screen size indicator: a little help for development mode and responsive design (see TwSizeIndicator.tsx in /components/helper)
+
+- [Formspree](https://formspree.io/) support for the mail icon, with a beautiful modal dialog. Formspree allows your users to contact you and send you messages directly from your site, with anti-spam protection. Simply create a free basic account, read the docs and get the key from your formspree account and then replace the key with your own here, in components/formspree/index.tsx :
+
+```ts:formspree/useContactForm.ts
+/* Line 11*/
+ const [state, handleSubmit, reset] = useForm('xdojkndq')
+```
+
+IMPORTANT NOTE: you must replace the key in useform like this : useform('[your key]'). The provided key is
+a test one of mine. You can use it to verify if the toast box is functional for example, but you must know
+that I'll receive all your test messages. (You can still send me a friendly hello message!)
+
+If you don't want to use Formspree, go to the siteMetadata.js file and set formspree to "false".
+
+## Libraries
+
+For translations, the chosen library is not next-translate as in V.1 of GautierArcin, but the following libraries:
+
+- i18next
+- i18next-browser-languagedetector
+- i18next-resources-to-backend
+- React-i18next
+
+Indeed, with the new version of next-js and the router app, it was easier for me to find information and tutorials to make everything work as expected. (I first tried with next-translate, but there are too many unresolved issues currently with this library and the features related to the new router)
+
+## Configuration
+
+Within the app folder, all content has been moved to a new folder [locale]: this is the official way recommended by next.js. An i18n folder has also been added:
+
+```
+app
+  │
+ [locale]
+    │
+    ├── i18n
+    │     │
+    │     ├──locales
+    │     │     │
+    │     │     ├── en
+    │     │     │   ├── about.json
+    │     │     │   │
+    │     │     │   ├── home.json
+    │     │     │   │
+    │     │     │   └── ...
+    │     │     └── fr
+    │     │         ├── about.json
+    │     │         │
+    │     │         ├── home.json
+    │     │         │
+    │     │         └── ...
+    │     │
+    │     │
+    │     ├── client.ts
+    │     ├── locales.js
+    │     ├── server.ts
+    │     └── settings.ts
+    │
+    └── ...
+```
+
+It is therefore in this i18n folder that the main logic for the internationalization of the application is located.
+
+- Json files:
+
+The "locales" subfolder contains the .json files where you will define your translations, the convention being to define one file per page of your site, with the name of the page concerned for the name of the json file.
+There is also a "common" file: if you do not specify a "namespace" or ns (the name of the file without the json extension) in your pages or components, the translations will be taken from this file by default.
+
+\*Important: for each language there must be a corresponding file with the same name, for example an "about" file for "fr" and for "en", etc. As well as translation keys with the same name within
+of each file.
+
+Example :
+
+In English in the "en" folder:
+
+```json:projects.json
+{
+   "title": "Projects",
+   "description": "Showcase your projects with a hero image (16 x 9)",
+   "learn": "Learn more",
+   "subtitle": "Here you will find information about my current projects",
+   "linkto": "Link to"
+}
+```
+
+In French in the "fr" folder:
+
+```json:projects.json
+{
+  "title": "Projets",
+  "description": "Présentez vos projets avec une image (16 x 9)",
+  "learn": "En savoir plus",
+  "subtitle": "Ici vous trouverez des informations sur mes projets actuels.",
+  "linkto": "Lien vers"
+}
+```
+
+- locales.js:
+
+This is the file where you will define the languages you want to use, as well as the default language:
+
+```js:locales.js
+const fallbackLng = 'en' // default language
+const secondLng = 'fr'
+
+module.exports = { fallbackLng, secondLng }
+```
+
+You can add as many languages as you want:
+
+```js:locales.js
+/* Example of adding a 3rd language:*/
+const fallbackLng = 'en'
+const secondLng = 'fr'
+const thirdLng = 'es'
+
+module.exports = { fallbackLng, secondLng, thirdLng }
+```
+
+However, this will require some additional configuration steps within other files (mainly files that are discussed here)
+
+You can also swap the default language and the second language:
+
+```js:locales.js
+/* Example of changing default language:*/
+const fallbackLng = 'fr'
+const secondLng = 'en'
+
+module.exports = { fallbackLng, secondLng}
+```
+
+- settings.ts
+
+This is a configuration file, which allows you to define a locales object as well as the corresponding options:
+
+```ts:settings.ts
+import type { InitOptions } from 'i18next'
+import { fallbackLng, secondLng } from './locales'
+
+/* Locales object, which defines all the languages that will be used in the application: */
+export const locales = [fallbackLng, secondLng] as const
+/* Typescript definition of type for our locales:*/
+export type LocaleTypes = (typeof locales)[number]
+/* “Namespace” (or ns) by default: translations will be taken from the file
+common.json if no ns is specified in your components or pages: */
+export const defaultNS = 'common'
+/* Function that will be reused in client.ts and server.ts files: */
+export function getOptions(locale = fallbackLng, ns = defaultNS): InitOptions {
+   return {
+     debug:true,
+     supportedLngs: locales,
+     fallbackLng,
+     lng: locale,
+     fallbackNS:defaultNS,
+     defaultNS,
+     ns,
+   }
+}
+```
+
+- client.ts and server.ts:
+
+Without going into complex details, these two files each export
+a function for translation (useTranslation on the client side, createTranslation on the server side),
+reusable in your pages and components:
+
+```ts:client.ts
+export function useTranslation(lng: LocaleTypes, ns: string) {
+   const translator = useTransAlias(ns)
+   const { i18n } = translator
+
+   /* Executed when content is rendered server-side: */
+   if (runsOnServerSide && lng && i18n.resolvedLanguage !== lng) {
+     i18n.changeLanguage(lng)
+   } else {
+     /* Use our custom implementation when running client-side: */
+     // eslint-disable-next-line react-hooks/rules-of-hooks
+     useCustomTranslationImplem(i18n, lng)
+   }
+   return translator
+}
+```
+
+```ts:server.ts
+export async function createTranslation(lang: LocaleTypes, ns: string) {
+   const i18nextInstance = await initI18next(lang, ns)
+
+   return {
+     /* The "t" translation function that we will use in our components: */
+     // e.g. t('greeting')
+     t: i18nextInstance.getFixedT(lang, Array.isArray(ns) ? ns[0]: ns),
+   }
+}
+```
+
+Example of client-side component, with translation of the button's aria-label:
+
+```ts:ThemeSwitch.tsx
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useTheme } from 'next-themes'
+/*Import the hook provided by next.js to retrieve the language
+defined by the user, and the client-side translation function: */
+import { useParams } from 'next/navigation'
+import { LocaleTypes } from 'app/[locale]/i18n/settings'
+import { useTranslation } from 'app/[locale]/i18n/client'
+
+const ThemeSwitch = () => {
+   /* Using the hook provided by next.js to retrieve the currently defined language: */
+   const locale = useParams()?.locale as LocaleTypes
+   /* Using the client-side translation function:
+    no namespace (ns) defined (empty square brackets), therefore the translation will be drawn
+    in the common.json file */
+   const { t } = useTranslation(locale, '')
+   const [mounted, setMounted] = useState(false)
+   const { theme, setTheme, resolvedTheme } = useTheme()
+
+   useEffect(() => setMounted(true), [])
+
+   if (!mounted) {
+     return null
+   }
+
+   return(
+     <button
+     /* Translation of aria-label */
+       aria-label={t('darkmode')}
+       onClick={() => setTheme(theme === 'dark' || resolvedTheme === 'dark' ? 'light' : 'dark')}
+     >
+       <svg
+         xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 20 20"
+         fill="currentColor"
+         className="h-6 w-6 text-gray-900 dark:text-gray-100"
+       >
+         {mounted && (theme === 'dark' || resolvedTheme === 'dark') ? (
+           <path
+             fillRule="evenodd"
+             d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-. 707- .707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.7 07.707zm1.414 8.486 l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+             clipRule="evenodd"
+           />
+         ): (
+           <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+         )}
+       </svg>
+     </button>
+   )
+}
+
+export default ThemeSwitch
+```
+
+Example of server-side component:
+
+```ts:footer.tsx
+import Link from './Link'
+import siteMetadata from '@/data/siteMetadata'
+import SocialIcon from '@/components/social-icons'
+/*Importing the server-side translation function: */
+import { createTranslation } from 'app/[locale]/i18n/server'
+import { LocaleTypes } from 'app/[locale]/i18n/settings'
+
+Props type = {
+   params: { locale: LocaleTypes }
+}
+/* the current language is passed as the page settings prop: */
+export default async function Footer({ params: { locale } }: Props) {
+/* Using the server-side translation function, with the "footer" namespace */
+   const { t } = await createTranslation(locale, 'footer')
+   return(
+     <footer>
+       <div className="mt-16 flex flex-col items-center">
+         <div className="mb-3 flex space-x-4">
+           <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} size={6} />
+           <SocialIcon kind="github" href={siteMetadata.github} size={6} />
+           <SocialIcon kind="facebook" href={siteMetadata.facebook} size={6} />
+           <SocialIcon kind="youtube" href={siteMetadata.youtube} size={6} />
+           <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={6} />
+           <SocialIcon kind="twitter" href={siteMetadata.twitter} size={6} />
+         </div>
+         <div className="mb-2 flex space-x-2 text-sm text-gray-500 dark:text-gray-400">
+           <div>{siteMetadata.author}</div>
+           <div>{` • `}</div>
+           <div>{`© ${new Date().getFullYear()}`}</div>
+           <div>{` • `}</div>
+           <Link href="/">{siteMetadata.title}</Link>
+         </div>
+         <div className="mb-8 text-sm text-gray-500 dark:text-gray-400">
+           <Link href="https://github.com/timlrx/tailwind-nextjs-starter-blog">
+        {t('theme')}
+           </Link>
+         </div>
+       </div>
+     </footer>
+   )
+}
+```
+
+For the creation of new components or pages, you will therefore have to rely on these two
+functions concerning your translations, depending on whether the component is rendered client-side or server-side.
+
+- Middleware.ts:
+
+Since I18n is not natively supported within the new router, it is an essential file for proper
+operation of the whole. It is also essential to use the "matcher"
+(here with inverted values which allow you to exclude folders and files which should not
+be supported by middleware)
+
+```ts:middleware.ts
+import { NextResponse, NextRequest } from 'next/server'
+import { locales } from 'app/[locale]/i18n/settings'
+import { fallbackLng } from 'app/[locale]/i18n/locales'
+
+export function middleware(request: NextRequest) {
+   /* Check if a language is supported in the pathname: */
+   const pathname = request.nextUrl.pathname
+
+   /* Check if default language is in pathname: */
+   if (pathname.startsWith(`/${fallbackLng}/`) || pathname === `/${fallbackLng}`) {
+     /* ex: the incoming request is: /en/about
+     The new path name is now: /about */
+     return NextResponse.redirect(
+       new URL(
+         pathname.replace(`/${fallbackLng}`, pathname === `/${fallbackLng}` ? '/' : ''),
+         request.url
+       )
+     )
+   }
+
+   const pathnameIsMissingLocale = locales.every(
+     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
+   )
+
+   if (pathnameIsMissingLocale) {
+     /* We are on the default language
+     Rewriting so that next.js understands */
+
+     // ex: incoming request is: /about
+     // Inform Next.js that it should behave as if it were: /en/about
+     return NextResponse.rewrite(new URL(`/${fallbackLng}${pathname}`, request.url))
+   }
+}
+
+export const config = {
+   /* Do not execute middleware on the following paths: */
+   // prettier-ignore
+   match:
+   '/((?!api|static|data|css|scripts|.*\\..*|_next).*|sitemap.xml)',
+}
+```
+
+## Posts
+
+All posts are grouped within the “data/blog” folder.
+
+They are organized into subfolders: "data/blog/en" for English, and "data/blog/fr" for French. 
+You can name the subfolders for your languages as you want : with the current configuration in contentlayer.config.ts file, the slug for your posts is the filename of your post, without the .mdx extension. All your translated posts must have the same name as the originals ones, for handling purposes of translation.
+
+Example : 
+
+En: "data/blog/en/code-sample.mdx"
+Fr: "data/blog/fr/code-sample.mdx"
+
+Etc.
+
+- Headers of your posts:
+
+```mdx:article.mdx
+---
+title: article title
+date: creation date
+lastmod: last modified date
+language: article language
+tags: tags
+authors: authors
+pictures: pictures
+draft: under construction or not
+summary: summary
 ---
 ```
 
-## Deploy
+- contentlayer.config.ts:
 
-### GitHub Pages
+Within the "contentlayer.config.ts" file there are therefore minor changes due to
+internationalization:
 
-A [`pages.yml`](.github/workflows/pages.yml) workflow is already provided. Simply select "GitHub Actions" in: `Settings > Pages > Build and deployment > Source`.
-
-### Vercel
-
-The easiest way to deploy the template is to deploy on [Vercel](https://vercel.com). Check out the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-### Netlify
-
-[Netlify](https://www.netlify.com/)’s Next.js runtime configures enables key Next.js functionality on your website without the need for additional configurations. Netlify generates serverless functions that will handle Next.js functionalities such as server-side rendered (SSR) pages, incremental static regeneration (ISR), `next/images`, etc.
-
-See [Next.js on Netlify](https://docs.netlify.com/integrations/frameworks/next-js/overview/#next-js-runtime) for suggested configuration values and more details.
-
-### Static hosting services (GitHub Pages / S3 / Firebase etc.)
-
-Run:
-
-```sh
-$ EXPORT=1 UNOPTIMIZED=1 yarn build
+```
+export const Blog = defineDocumentType(() => ({
+   name: 'Blog',
+   filePathPattern: 'blog/**/*.mdx',
+   contentType: 'mdx',
+   fields: {
+     title: { type: 'string', required: true },
+     series: { type: 'nested', of: Series },
+     date: { type: 'date', required: true },
+     language: { type: 'string', required: true }, // New required field
+     tags: { type: 'list', of: { type: 'string' }, default: [] },
+     lastmod: { type: 'date' },
+     featured: { type: 'boolean' },
+     draft: { type: 'boolean' },
+     summary: { type: 'string' },
+     images: { type: 'json' },
+     authors: { type: 'list', of: { type: 'string' }, required: true },
+     layout: { type: 'string' },
+     bibliography: { type: 'string' },
+     canonicalUrl: { type: 'string' },
+   },
+   ...
+)})
 ```
 
-Then, deploy the generated `out` folder or run `npx serve out` it locally.
+For the “authors” field:
 
-> [!IMPORTANT]
-> If deploying with a URL base path, like https://example.org/myblog you need an extra `BASE_PATH` shell-var to the build command:
->
-> ```sh
-> $ EXPORT=1 UNOPTIMIZED=1 BASE_PATH=/myblog yarn build
-> ```
->
-> => In your code, `${process.env.BASE_PATH || ''}/robots.txt` will print `"/myblog/robots.txt"` in the `out` build (or only `/robots.txt` if `yarn dev`, ie: on localhost:3000)
+```
+export const Authors = defineDocumentType(() => ({
+   name: 'Authors',
+   filePathPattern: 'authors/**/*.mdx',
+   contentType: 'mdx',
+   fields: {
+     name: { type: 'string', required: true },
+     language: { type: 'string', required: true }, // New required field
+     default: {type: 'boolean'},
+     avatar: { type: 'string' },
+     occupation: { type: 'string' },
+     company: { type: 'string' },
+     email: { type: 'string' },
+     twitter: { type: 'string' },
+     linkedin: { type: 'string' },
+     github: { type: 'string' },
+     layout: { type: 'string' },
+   },
+```
 
-> [!TIP]
-> Alternatively to `UNOPTIMIZED=1`, to continue using `next/image`, you can use an alternative image optimization provider such as Imgix, Cloudinary or Akamai. See [image optimization documentation](https://nextjs.org/docs/app/building-your-application/deploying/static-exports#image-optimization) for more details.
+-Generation of tags:
 
-Consider removing the following features that cannot be used in a static build:
+Here too, it was necessary to make modifications in order to generate a .json object
+with tags for each language.
 
-1. Comment out `headers()` from `next.config.js`.
-2. Remove `api` folder and components which call the server-side function such as the Newsletter component. Not technically required and the site will build successfully, but the APIs cannot be used as they are server-side functions.
+```
+function createTagCount(allBlogs) {
+   const tagCount = {
+     [fallbackLng]: {},
+     [secondLng]: {},
+   }
 
-## Frequently Asked Questions
+   allBlogs.forEach((file) => {
+     if (file.tags && (!isProduction || file.draft !== true)) {
+       file.tags.forEach((tag: string) => {
+         const formattedTag = GithubSlugger.slug(tag)
+         if (file.language === fallbackLng) { // tags for default language
+           tagCount[fallbackLng][formattedTag] = (tagCount[fallbackLng][formattedTag] || 0) + 1
+         } else if (file.language === secondLng) { // tags for the second language
+           tagCount[secondLng][formattedTag] = (tagCount[secondLng][formattedTag] || 0) + 1
+         }
+       })
+     }
+   })
 
-- [How can I add a custom MDX component?](/faq/custom-mdx-component.md)
-- [How can I customize the `kbar` search?](/faq/customize-kbar-search.md)
-- [Deploy with docker](/faq/deploy-with-docker.md)
+   writeFileSync('./app/[locale]/tag-data.json', JSON.stringify(tagCount))
+}
+```
 
-## Support
+Note: If you want to add other languages (3, 4 or even 5 languages), you will need to modify the logic to support
+these new languages.
 
-Using the template? Support this effort by giving a star on GitHub, sharing your own blog and giving a shoutout on Twitter or becoming a project [sponsor](https://github.com/sponsors/timlrx).
+## Authors
 
-## Licence
+Folders containing authors are organized by language, and author information can be translated.
 
-[MIT](https://github.com/timlrx/tailwind-nextjs-starter-blog/blob/main/LICENSE) © [Timothy Lin](https://www.timlrx.com)
+The implementation is quite simple and straightforward: if you want to change or add a language, just change or add
+folders with your corresponding translations for new languages.
+
+## SiteMetadata file and new localeMetadata file
+
+The siteMetadata.js file present in the "/data" folder does not require modifications related to internationalization.
+
+On the other hand, in order to best manage the metadata, it was necessary to create a new file, for the title
+and the description:
+
+```ts:localeMetadata.ts
+Metadata type = {
+   [locale: string]: string
+}
+/* Add or modify the title here depending on the chosen languages: */
+export const maintitle: Metadata = {
+   en: 'Next.js i18n Starter Blog',
+  fr: 'Starter Blog Next.js i18n',
+}
+/* Add or modify the description here depending on the chosen languages: */
+export const maindescription: Metadata = {
+   en: 'A blog created with Next.js, i18n and Tailwind.css',
+  fr: 'Un blog crée avec tailwind, i18n et next.js',
+}
+```
+
+## “Projects” tab
+
+The logic needed for the "projects" tab resides in the following file, also present in the "/data" folder:
+
+```ts:projectsData.ts
+type Project = {
+   title: string
+   description: string
+   imgSrc: string
+   href: string
+}
+
+type ProjectsData = {
+   [locale:string]:Project[]
+}
+
+const projectsData: ProjectsData = {
+   en: [
+     {
+       title: 'A Search Engine',
+       description: `What if you could look up any information in the world? Webpages, images, videos
+         and more. Google has many features to help you find exactly what you're looking for
+         for.`,
+       imgSrc: '/static/images/google.png',
+       href: 'https://www.google.com',
+     },
+     {
+       title: 'The Time Machine',
+       description: `Imagine being able to travel back in time or to the future. Simple turn the knob
+         to the desired date and press “Go”. No more worrying about lost keys or
+         forgotten headphones with this simple yet affordable solution.`,
+       imgSrc: '/static/images/time-machine.jpg',
+       href: '/blog/the-time-machine',
+     },
+   ],
+
+    fr: [
+    {
+      title: 'Un moteur de recherche',
+      description: `Et si vous pouviez rechercher n'importe quelle information dans le monde ? Pages Web, images, vidéos
+        et plus. Google propose de nombreuses fonctionnalités pour vous aider à trouver exactement ce que vous cherchez.`,
+      imgSrc: '/static/images/google.png',
+      href: 'https://www.google.com',
+    },
+    {
+      title: 'La Machine à remonter le temps',
+      description: `Imaginez pouvoir voyager dans le temps ou vers le futur. Tournez simplement le bouton
+        à la date souhaitée et appuyez sur "Go". Ne vous inquiétez plus des clés perdues ou
+        écouteurs oubliés avec cette solution simple mais abordable.`,
+      imgSrc: '/static/images/time-machine.jpg',
+      href: '/blog/the-time-machine',
+    },
+  ],
+}
+
+export default projectsData
+```
+
+Again, simply modify the logic keeping the same general structure, and according to your chosen languages/and/or number of languages.
+
+## Search bar :
+
+The original repository allows support for kbar and algolia.
+
+Here, the search bar relies on the kbar library, and Algolia support is not planned.
+If you prefer to use Algolia, it will be up to you to implement it on your site, instead of kbar.
+
+There's an issue when using regular translations, so I implemented a workaround for that problem. Just modify the name in each menu item, as well as the navigationSection object, based on the languages you're using.
+
+```ts:SearchProvider.ts
+  export const SearchProvider = ({ children }: SearchProviderProps) => {
+  const locale = useParams()?.locale as LocaleTypes
+  const { t } = useTranslation(locale, '')
+  const router = useRouter()
+   const authors = allAuthors
+    .filter((a) => a.language === locale)
+    .sort((a, b) => (a.default === b.default ? 0 : a.default ? -1 : 1)) as Authors[]
+
+  const authorSearchItems = authors.map((author) => {
+    const { name, slug } = author
+    return {
+      id: slug,
+      name: name,
+      keywords: '',
+      shortcut: [],
+      section: locale === fallbackLng ? 'Authors' : 'Auteurs',
+      perform: () => router.push(`/${locale}/about/${slug}`),
+      icon: (
+        <i>
+          <AboutIcon />
+        </i>
+      ),
+    }
+  })
+
+  const showAuthorsSearch = siteMetadata.multiauthors
+  const authorsActions = [
+    ...(showAuthorsSearch ? authorSearchItems : []),
+    ...(showAuthorsSearch
+      ? []
+      : [
+          {
+            id: 'about',
+            name: locale === fallbackLng ? 'About' : 'À propos',
+            keywords: '',
+            shortcut: ['a'],
+            section: locale === fallbackLng ? 'Navigate' : 'Naviguer',
+            perform: () => router.push(`/${locale}/about`),
+            icon: (
+              <i>
+                <AboutIcon />
+              </i>
+            ),
+          },
+        ]),
+  ]
+  /* issue when using regular translations, this is a workaround to show how to implement section titles */
+   /*Modify the following line based on your implemented languages: */
+  const navigationSection = locale === fallbackLng ? 'Navigate' : 'Naviguer'
+  return (
+    <KBarSearchProvider
+      kbarConfig={{
+        searchDocumentsPath: 'search.json',
+        /* issue when using regular translations, this is a workaround to show how to implement translated menu titles */
+        defaultActions: [
+          {
+            id: 'home',
+            name: locale === fallbackLng ? 'Home' : 'Accueil',
+            keywords: '',
+            shortcut: ['h'],
+            section: navigationSection,
+            perform: () => router.push(`/${locale}`),
+            icon: (
+              <i>
+                <HomeIcon />
+              </i>
+            ),
+          },
+          {
+            id: 'blog',
+            name: locale === fallbackLng ? 'Blog' : 'Blog',
+            keywords: '',
+            shortcut: ['b'],
+            section: navigationSection,
+            perform: () => router.push(`/${locale}/blog`),
+            icon: (
+              <i>
+                <BlogIcon />
+              </i>
+            ),
+          },
+          {
+            id: 'tags',
+            name: locale === fallbackLng ? 'Tags' : 'Tags',
+            keywords: '',
+            shortcut: ['t'],
+            section: navigationSection,
+            perform: () => router.push(`/${locale}/tags`),
+            icon: (
+              <i>
+                <TagsIcon />
+              </i>
+            ),
+          },
+          {
+            id: 'projects',
+            name: locale === fallbackLng ? 'Projects' : 'Projets',
+            keywords: '',
+            shortcut: ['p'],
+            section: navigationSection,
+            perform: () => router.push(`/${locale}/projects`),
+            icon: (
+              <i>
+                <ProjectsIcon />
+              </i>
+            ),
+          },
+          ...authorsActions,
+        ],
+        onSearchDocumentsLoad(json) {
+          return json
+            .filter((post: CoreContent<Blog>) => post.language === locale)
+            .map((post: CoreContent<Blog>) => ({
+              id: post.path,
+              name: post.title,
+              keywords: post?.summary || '',
+              section: t('content'),
+              subtitle: post.tags.join(', '),
+              perform: () => router.push(`/${locale}/blog/${post.slug}`),
+            }))
+        },
+      }}
+    >
+      {children}
+    </KBarSearchProvider>
+  )
+}
+```
+
+## Things to do :
+
+- Fix rss.mjs. If you find a solution on your side, don't hesitate to open a PR!
+
+Everything else is currently working as expected.
+
+Here is another possible solution for i18n integration regarding SEO, and even the translated URL:
+
+- [next-roots](https://github.com/svobik7/next-roots)
+
+Any help for improvements and/or bug reports is welcome!
+
+Important notes:
+
+- I use a custom Link component for language selection: I prefer this to the HTML selection element (easier to customize).
+  The small downside is that it requires more code. If you prefer, you are free to adapt and use the select element instead, but I
+  I'll keep it as is for the template.
+
+- Do not update dependencies: this will break your application since some things need to be fixed on the side of these libraries
+  ​
+
+Author: [pxlsyl](https://pxlsyl.art)

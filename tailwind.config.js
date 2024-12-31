@@ -7,7 +7,6 @@ module.exports = {
   content: [
     './node_modules/pliny/**/*.js',
     './app/**/*.{js,ts,jsx,tsx}',
-    './pages/**/*.{js,ts,tsx}',
     './components/**/*.{js,ts,tsx}',
     './layouts/**/*.{js,ts,tsx}',
     './data/**/*.mdx',
@@ -22,16 +21,12 @@ module.exports = {
         14: '3.5rem',
       },
       fontFamily: {
-        sans: ['var(--font-space-grotesk)', ...fontFamily.sans],
+        sans: ['var(--font-space-grotesk)', 'var(--font-noto-sans-tc)', ...fontFamily.sans],
       },
       colors: {
         primary: colors.pink,
+        heading: colors.blue,
         gray: colors.gray,
-      },
-      zIndex: {
-        60: '60',
-        70: '70',
-        80: '80',
       },
       typography: ({ theme }) => ({
         DEFAULT: {
