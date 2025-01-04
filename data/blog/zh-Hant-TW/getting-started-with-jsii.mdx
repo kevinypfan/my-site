@@ -1,0 +1,390 @@
+---
+title: JSII 快速入門：使用 TypeScript 建構跨語言函式庫
+authors: ['kevinfan']
+date: '2025-01-04'
+tags: ['javascript', 'typescript', 'python', 'golang', 'java', 'csharp', 'jsii', 'aws']
+draft: false
+summary: 'JSII 讓開發者能使用 TypeScript 建構函式庫，並在 Python、Java、C#、Go 等多種語言中無縫運行。本文提供了設定 JSII 專案的逐步教學，涵蓋多語言支援配置及外部 npm 套件整合，幫助您快速上手並擴展功能。'
+language: zh-Hant-TW
+images: ['/static/images/articles/jsii.png']
+---
+
+![jsii logo](/static/images/articles/jsii.png)
+
+### 什麼是 JSII？
+
+JSII 允許任何語言的代碼與 JavaScript 類自然地進行互動。這項技術使得 AWS Cloud Development Kit 能夠從單一代碼庫中交付多語言支援的函式庫！
+
+用 TypeScript 撰寫的類別庫，不僅可以像平常一樣用於 TypeScript 或 JavaScript 的項目中，還能用於 Python、Java、C#（以及 .NET 家族中的其他語言）等多種語言的項目中。
+
+### 快速上手
+
+#### 環境準備
+
+1. **安裝 Node.js**
+
+到 [Node.js 官方網站](https://nodejs.org)下載適合你操作系統的安裝包。
+
+JSII 支援 Node.js 版本包含 ^18.0.0（支援至 2025 年 4 月 30 日）、^20.0.0（支援至 2026 年 4 月 30 日）以及 ^22.0.0（支援至 2027 年 4 月 30 日）。
+
+2. 在開發 **jsii 模組** 時，必須為每個目標語言安裝對應的 SDK，才能讓 `jsii-pacmak` 生成可發布的產物。
+
+- **.NET**：需要 .NET 6.0 或更新版本。
+- **Go**：需要 Go 1.18 或更新版本。
+- **Java**：需要 JDK 8 或更新版本，並且需要 Maven 3.6 或更新版本。
+- **Python**：需要 Python 3.8 或更新版本。
+
+#### 建立專案
+
+```bash
+mkdir jsii-demo
+cd jsii-demo
+npm init -y
+```
+
+#### 新增必要的資訊
+
+接下來，請在新創建的 package.json 文件中添加必要的資訊。具體而言，jsii 模組必須包含 author 和 repository 的設定（這些設定對於某些分發平台生成有效的函式庫是必需的，例如 Maven Central）。
+
+```json
+{
+   "name": "jsii-demo",
+   "version": "1.0.0",
++  "description": "A demonstration jsii library",
+   "main": "index.js",
+   "scripts": {
+     "test": "echo \"Error: no test specified\" && exit 1"
+   },
+   "keywords": [],
++  "author": {
++    "name": "KevinFan",
++    "email": "kevinypfan@gmail.com"
++  },
++  "repository": {
++    "url": "https://github.com/kevinypfan/jsii-demo.git"
++  },
+   "license": "ISC"
+}
+```
+
+#### 設定 jsii 配置
+
+最後，執行 jsii-config 指令，並根據助手的引導完成配置過程：
+
+```bash
+npx jsii-config
+? Target Languages python, dotnet
+? Typescript config - should jsii generate a compatible tsconfig or do you want to manage it yourself
+jsii-managed
+? Jsii Stability - stability of compiled module apis experimental
+? Jsii Type Definitions - compiled typescript definitions file for module index.d.ts
+? Version Format - determines the format of the jsii toolchain version string that is included in the.jsii
+assembly file's jsiiVersion attribute short
+? Python Distname - PyPI distribution name for the package (e.g. "module-name.core") jsii_demo.core
+? Python Module - name of the generated Python module (e.g. "module_name.core") jsii_demo.core
+? .NET Namespace - root namespace under which types will be declared (e.g. "Amazon.Module") JsiiDemo.Core
+? .NET Package Id - identifier of the package in the NuGet registry (e.g. "Amazon.Module") JsiiDemo.Core
+? .NET Icon Url - optional url of the icon to be shown in the NuGet gallery (e.g.
+"https://raw.githubusercontent.com/module-icon.png")
+? .NET Version Suffix - optional suffix that will be appended at the end of the NuGet package's version field,
+ must begin with a "-" (e.g. "-devpreview")
+? Output Directory - Location for typescript compiler output dist
+? Confirm Jsii Config
+{
+  "stability": "experimental",
+  "types": "index.d.ts",
+  "jsii": {
+    "versionFormat": "short",
+    "targets": {
+      "python": {
+        "distName": "jsii_demo.core",
+        "module": "jsii_demo.core"
+      },
+      "dotnet": {
+        "namespace": "JsiiDemo.Core",
+        "packageId": "JsiiDemo.Core"
+      }
+    },
+    "tsc": {
+      "outDir": "dist"
+    }
+  }
+}
+Select no to revise Yes
+Success!
+```
+
+#### 安裝依賴
+
+接著安裝依賴套件
+
+```bash
+npm install --save-dev jsii jsii-pacmak
+```
+
+#### 設定 package.json 的 scripts
+
+最後，您可能需要在 package.json 文件中配置一些方便使用的腳本，以便於管理和操作您的項目：
+
+```json
+{
+   "name": "jsii-demo",
+   "version": "1.0.0",
+   "description": "A demonstration jsii library",
+   "main": "index.js",
+   "scripts": {
++    "build": "jsii",
++    "build:watch": "jsii --watch",
++    "package": "jsii-pacmak"
+   },
+   // ...
+}
+```
+
+#### 開始撰寫程式
+
+建立一個新的 `index.ts` 檔案與簡單的程式：
+
+```javascript
+export interface GreeterProps {
+  readonly greetee: string;
+}
+
+export class Greeter {
+  private readonly greetee: string;
+
+  public constructor(props: GreeterProps) {
+    this.greetee = props.greetee;
+  }
+
+  public greet(): string {
+    return `Hello, ${this.greetee}!`;
+  }
+}
+```
+
+這時嘗試 build typescript 時會看到錯誤
+
+```bash
+npm run build
+
+> jsii-demo@1.0.0 build
+> jsii
+
+[2025-01-04T17:13:04.604] [ERROR] jsii/compiler - Type model errors prevented the JSII assembly from being created
+error JSII4: Could not find "main" file: /Users/zackfan/Project/dummy/index.ts
+warning JSII3: There is no "README.md" file. It is required in order to generate valid PyPI (Python) packages.
+```
+
+修復錯誤需要在目錄下產生 `README.md` 檔案
+
+```bash
+touch README.md
+```
+
+然後修改一些 package.json 的屬性，並在 jsii 裡加上 outdir 位置
+
+```json
+{
+  "name": "jsii-demo",
+  "version": "1.0.0",
+  "description": "A demonstration jsii library",
+-  "main": "index.js",
++  "main": "dist/index.js",
+  "scripts": {
+    "build": "jsii",
+    "build:watch": "jsii --watch",
+    "package": "jsii-pacmak"
+  },
+  "keywords": [],
+  "author": {
+    "name": "KevinFan",
+    "email": "kevinypfan@gmail.com"
+  },
+  "repository": {
+    "url": "https://github.com/kevinypfan/jsii-demo.git"
+  },
+  "license": "ISC",
+  "stability": "experimental",
+- "types": "index.d.ts",
++  "types": "dist/index.d.ts",
+  "jsii": {
++    "outdir": "targets",
+    "versionFormat": "short",
+    "targets": {
+      "python": {
+        "distName": "jsii_demo.core",
+        "module": "jsii_demo.core"
+      },
+      "dotnet": {
+        "namespace": "JsiiDemo.Core",
+        "packageId": "JsiiDemo.Core"
+      }
+    },
+    "tsc": {
+      "outDir": "dist"
+    }
+  },
+  "devDependencies": {
+    "jsii": "^5.7.4",
+    "jsii-pacmak": "^1.106.0"
+  }
+}
+```
+
+接下來就可以執行打包流程啦 `build` -> `package`
+
+```
+npm run build
+
+> jsii-demo@1.0.0 build
+> jsii
+
+npm run package
+
+> jsii-demo@1.0.0 package
+> jsii-pacmak
+```
+
+套件會產生在 targets 資料夾
+
+```
+tree targets
+targets
+├── dotnet
+│   ├── JsiiDemo.Core.1.0.0.nupkg
+│   └── JsiiDemo.Core.1.0.0.snupkg
+├── js
+│   └── jsii-demo@1.0.0.jsii.tgz
+└── python
+    ├── jsii_demo.core-1.0.0-py3-none-any.whl
+    └── jsii_demo_core-1.0.0.tar.gz
+
+4 directories, 5 files
+```
+
+#### 使用 python 執行剛剛 build 出來的套件
+
+因為我個人比較熟悉 python 所以用此展示成果。
+
+建立虛擬 python 環境，避免受本地環境影響
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+安裝剛剛 build 出來的套件
+
+```bash
+pip install targets/python/jsii_demo.core-1.0.0-py3-none-any.whl
+```
+
+建立 test.py 測試套件運行
+
+```python
+from jsii_demo.core import Greeter
+
+greeter = Greeter(greetee="Kevin")
+
+print(greeter.greet()) # Output: Hello, Kevin!
+```
+
+#### 如何在 jsii 使用 npm 套件呢？
+
+為了讓我們 print 出來的資訊更生動，我們使用 [figlet](https://www.npmjs.com/package/figlet) 來印出資訊。
+
+首先使用 npm 安裝套件
+
+```bash
+npm add figlet
+npm add -D @types/figlet
+```
+
+接下來記得在 pachage.json 的 bundledDependencies 加上 figlet
+
+```json
+{
+  "name": "jsii-demo",
+  "version": "1.0.0",
+  "description": "A demonstration jsii library",
+  "main": "dist/index.js",
+  // ...
+  "devDependencies": {
+    "@types/figlet": "^1.7.0",
+    "jsii": "^5.7.4",
+    "jsii-pacmak": "^1.106.0"
+  },
+  "dependencies": {
+    "figlet": "^1.8.0"
+  },
++    "bundledDependencies": [
++    "figlet"
++  ]
+}
+```
+
+修改我們的 index.ts 檔案，新增 prettyGreet function
+
+```typescript
+import * as figlet from "figlet";
+
+export class Greeter {
+  // ...
+  public prettyGreet(): string {
+    return figlet.textSync(`Hello, ${this.greetee}!`, {
+      font: "Ghost",
+      horizontalLayout: "default",
+      verticalLayout: "default",
+      width: 80,
+      whitespaceBreak: true,
+    });
+  }
+}
+```
+
+重新用 npm 執行 build 與 package 並使用 pip 重安裝 python wheel 檔案
+
+```bash
+npm run build && npm run package
+pip install --force-reinstall targets/python/jsii_demo.core-1.0.0-py3-none-any.whl
+```
+
+修改 test.py 檔案，使用 prety_greet 印出資訊
+```python
+from jsii_demo.core import Greeter
+
+greeter = Greeter(greetee="Kevin")
+
+print(greeter.pretty_greet())
+#  ('-. .-.   ('-.                                          
+# ( OO )  / _(  OO)                                         
+# ,--. ,--.(,------.,--.      ,--.      .-'),-----.         
+# |  | |  | |  .---'|  |.-')  |  |.-') ( OO'  .-.  '        
+# |   .|  | |  |    |  | OO ) |  | OO )/   |  | |  |        
+# |       |(|  '--. |  |`-' | |  |`-' |\_) |  |\|  |        
+# |  .-.  | |  .--'(|  '---.'(|  '---.'  \ |  | |  |        
+# |  | |  | |  `---.|      |  |      |    `'  '-'  '.-.     
+# `--' `--' `------'`------'  `------'      `-----' ',/     
+# .-. .-')     ('-.        (`-.                .-') _ ,---. 
+# \  ( OO )  _(  OO)     _(OO  )_             ( OO ) )|   | 
+# ,--. ,--. (,------.,--(_/   ,. \ ,-.-') ,--./ ,--,' |   | 
+# |  .'   /  |  .---'\   \   /(__/ |  |OO)|   \ |  |\ |   | 
+# |      /,  |  |     \   \ /   /  |  |  \|    \|  | )|   | 
+# |     ' _)(|  '--.   \   '   /,  |  |(_/|  .     |/ |  .' 
+# |  .   \   |  .--'    \     /__),|  |_.'|  |\    |  `--'  
+# |  |\   \  |  `---.    \   /   (_|  |   |  | \   |  .--.  
+# `--' '--'  `------'     `-'      `--'   `--'  `--'  '--' 
+```
+
+大功告成！成功在 python 環境執行 TypeScript 程式囉 🎉
+
+### 結論
+
+透過 JSII，我們可以輕鬆地將以 TypeScript 撰寫的 Library 發布到多種語言的生態系統中，並且保有一致的功能與使用體驗。這項工具對於需要跨語言支援的專案尤其重要，例如 AWS CDK 的應用場景。透過本文的實際操作流程，我們展示了如何在 TypeScript 中建構 Library 並成功在 Python 環境中使用它，進一步結合了外部 npm 套件來增強功能表現。
+
+JSII 不僅提供了技術上的可行性，更為跨語言開發的高效性與一致性打下了基礎。對於想要擴展開發成果到更多語言開發者的團隊，JSII 是一個強大的選擇。
+
+Demo Repo: [GitHub Repository](https://github.com/kevinypfan/jsii-demo)
+
+歡迎瀏覽並試用，若有任何問題或建議，歡迎提出 Issue 或留言分享您的使用心得！

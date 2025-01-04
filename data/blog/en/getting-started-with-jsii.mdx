@@ -1,0 +1,399 @@
+---
+title: "Getting Started with JSII: Build Cross-Language Libraries Using TypeScript"
+authors: ['kevinfan']
+date: '2025-01-04'
+tags: ['javascript', 'typescript', 'python', 'golang', 'java', 'csharp', 'jsii', 'aws']
+draft: false
+summary: 'JSII enables developers to build libraries in TypeScript and seamlessly use them across multiple programming languages, including Python, Java, C#, and Go. This article provides a step-by-step guide on setting up a JSII project, configuring it for multi-language support, and integrating external npm packages to enhance functionality.'
+language: en
+images: ['/static/images/articles/jsii.png']
+---
+
+![jsii logo](/static/images/articles/jsii.png)
+
+### What is JSII?
+
+JSII allows code written in any language to interact seamlessly with JavaScript classes. This technology enables the AWS Cloud Development Kit to deliver multi-language supported libraries from a single codebase!
+
+Libraries written in TypeScript can not only be used in TypeScript or JavaScript projects as usual but also in projects using Python, Java, C# (and other languages in the .NET family), and more.
+
+### Quick Start
+
+#### Environment Setup
+
+1. **Install Node.js**
+
+Download the appropriate installer for your operating system from the [Node.js official website](https://nodejs.org).
+
+JSII supports Node.js versions: ^18.0.0 (supported until April 30, 2025), ^20.0.0 (supported until April 30, 2026), and ^22.0.0 (supported until April 30, 2027).
+
+2. **Install SDKs for Target Languages**
+
+When developing a **jsii module**, you must install the corresponding SDKs for each target language to allow `jsii-pacmak` to generate publishable artifacts.
+
+- **.NET**: Requires .NET 6.0 or later.
+- **Go**: Requires Go 1.18 or later.
+- **Java**: Requires JDK 8 or later and Maven 3.6 or later.
+- **Python**: Requires Python 3.8 or later.
+
+#### Create a Project
+
+```bash
+mkdir jsii-demo
+cd jsii-demo
+npm init -y
+```
+
+#### Add Necessary Information
+
+Next, add the required fields to the newly created `package.json` file. Specifically, a jsii module must include settings for `author` and `repository` (these settings are necessary for some distribution platforms like Maven Central).
+
+```json
+{
+   "name": "jsii-demo",
+   "version": "1.0.0",
++  "description": "A demonstration jsii library",
+   "main": "index.js",
+   "scripts": {
+     "test": "echo \"Error: no test specified\" && exit 1"
+   },
+   "keywords": [],
++  "author": {
++    "name": "KevinFan",
++    "email": "kevinypfan@gmail.com"
++  },
++  "repository": {
++    "url": "https://github.com/kevinypfan/jsii-demo.git"
++  },
+   "license": "ISC"
+}
+```
+
+#### Configure JSII
+
+Run the `jsii-config` command and follow the prompts to complete the configuration process:
+
+```bash
+→ npx jsii-config
+? Target Languages python, dotnet
+? Typescript config - should jsii generate a compatible tsconfig or do you want to manage it yourself
+jsii-managed
+? Jsii Stability - stability of compiled module apis experimental
+? Jsii Type Definitions - compiled typescript definitions file for module index.d.ts
+? Version Format - determines the format of the jsii toolchain version string that is included in the.jsii
+assembly file's jsiiVersion attribute short
+? Python Distname - PyPI distribution name for the package (e.g. "module-name.core") jsii_demo.core
+? Python Module - name of the generated Python module (e.g. "module_name.core") jsii_demo.core
+? .NET Namespace - root namespace under which types will be declared (e.g. "Amazon.Module") JsiiDemo.Core
+? .NET Package Id - identifier of the package in the NuGet registry (e.g. "Amazon.Module") JsiiDemo.Core
+? .NET Icon Url - optional url of the icon to be shown in the NuGet gallery (e.g.
+"https://raw.githubusercontent.com/module-icon.png")
+? .NET Version Suffix - optional suffix that will be appended at the end of the NuGet package's version field,
+ must begin with a "-" (e.g. "-devpreview")
+? Output Directory - Location for typescript compiler output dist
+? Confirm Jsii Config
+{
+  "stability": "experimental",
+  "types": "index.d.ts",
+  "jsii": {
+    "versionFormat": "short",
+    "targets": {
+      "python": {
+        "distName": "jsii_demo.core",
+        "module": "jsii_demo.core"
+      },
+      "dotnet": {
+        "namespace": "JsiiDemo.Core",
+        "packageId": "JsiiDemo.Core"
+      }
+    },
+    "tsc": {
+      "outDir": "dist"
+    }
+  }
+}
+Select no to revise Yes
+Success!
+```
+
+#### Install Dependencies
+
+Install the required dependencies:
+
+```bash
+npm install --save-dev jsii jsii-pacmak
+```
+
+#### Add Scripts to `package.json`
+
+Update the `scripts` section of `package.json` for easier project management:
+
+```json
+{
+   "name": "jsii-demo",
+   "version": "1.0.0",
+   "description": "A demonstration jsii library",
+   "main": "index.js",
+   "scripts": {
++    "build": "jsii",
++    "build:watch": "jsii --watch",
++    "package": "jsii-pacmak"
+   },
+   // ...
+}
+```
+
+#### Write Code
+
+Create a new `index.ts` file with a simple program:
+
+```typescript
+export interface GreeterProps {
+  readonly greetee: string;
+}
+
+export class Greeter {
+  private readonly greetee: string;
+
+  public constructor(props: GreeterProps) {
+    this.greetee = props.greetee;
+  }
+
+  public greet(): string {
+    return `Hello, ${this.greetee}!`;
+  }
+}
+```
+
+#### Build and Package
+
+Run the following commands to build and package the library:
+
+```bash
+npm run build
+
+> jsii-demo@1.0.0 build
+> jsii
+
+[2025-01-04T17:13:04.604] [ERROR] jsii/compiler - Type model errors prevented the JSII assembly from being created
+error JSII4: Could not find "main" file: /Users/zackfan/Project/dummy/index.ts
+warning JSII3: There is no "README.md" file. It is required in order to generate valid PyPI (Python) packages.
+```
+
+To fix the error, you need to create a `README.md` file in the directory.
+
+```bash
+touch README.md
+```
+
+Next, modify some properties in `package.json` and add the `outdir` location in the jsii configuration.
+
+```json
+{
+  "name": "jsii-demo",
+  "version": "1.0.0",
+  "description": "A demonstration jsii library",
+-  "main": "index.js",
++  "main": "dist/index.js",
+  "scripts": {
+    "build": "jsii",
+    "build:watch": "jsii --watch",
+    "package": "jsii-pacmak"
+  },
+  "keywords": [],
+  "author": {
+    "name": "KevinFan",
+    "email": "kevinypfan@gmail.com"
+  },
+  "repository": {
+    "url": "https://github.com/kevinypfan/jsii-demo.git"
+  },
+  "license": "ISC",
+  "stability": "experimental",
+- "types": "index.d.ts",
++  "types": "dist/index.d.ts",
+  "jsii": {
++    "outdir": "targets",
+    "versionFormat": "short",
+    "targets": {
+      "python": {
+        "distName": "jsii_demo.core",
+        "module": "jsii_demo.core"
+      },
+      "dotnet": {
+        "namespace": "JsiiDemo.Core",
+        "packageId": "JsiiDemo.Core"
+      }
+    },
+    "tsc": {
+      "outDir": "dist"
+    }
+  },
+  "devDependencies": {
+    "jsii": "^5.7.4",
+    "jsii-pacmak": "^1.106.0"
+  }
+}
+```
+
+Now, you can run the build and package process: `build` -> `package`.
+
+```bash
+npm run build
+
+> jsii-demo@1.0.0 build
+> jsii
+
+npm run package
+
+> jsii-demo@1.0.0 package
+> jsii-pacmak
+```
+
+The packages will be generated in the `targets` folder.
+
+```bash
+tree targets
+targets
+├── dotnet
+│   ├── JsiiDemo.Core.1.0.0.nupkg
+│   └── JsiiDemo.Core.1.0.0.snupkg
+├── js
+│   └── jsii-demo@1.0.0.jsii.tgz
+└── python
+    ├── jsii_demo.core-1.0.0-py3-none-any.whl
+    └── jsii_demo_core-1.0.0.tar.gz
+
+4 directories, 5 files
+```
+
+#### Use with Python
+
+To demonstrate, create a Python virtual environment and install the library:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install targets/python/jsii_demo.core-1.0.0-py3-none-any.whl
+```
+
+Create a `test.py` file to test the library:
+
+```python
+from jsii_demo.core import Greeter
+
+greeter = Greeter(greetee="Kevin")
+print(greeter.greet())  # Output: Hello, Kevin!
+```
+
+#### How to Use npm Packages in JSII?
+
+To enhance functionality, integrate the [figlet](https://www.npmjs.com/package/figlet) package:
+
+Install `figlet`:
+
+```bash
+npm add figlet
+npm add -D @types/figlet
+```
+
+Next, make sure to include figlet in the bundledDependencies section of your package.json:
+
+```json
+{
+  "name": "jsii-demo",
+  "version": "1.0.0",
+  "description": "A demonstration jsii library",
+  "main": "dist/index.js",
+  // ...
+  "devDependencies": {
+    "@types/figlet": "^1.7.0",
+    "jsii": "^5.7.4",
+    "jsii-pacmak": "^1.106.0"
+  },
+  "dependencies": {
+    "figlet": "^1.8.0"
+  },
++    "bundledDependencies": [
++    "figlet"
++  ]
+}
+```
+
+Modify the `index.ts` file to add a `prettyGreet` function:
+
+```typescript
+import * as figlet from "figlet";
+
+export interface GreeterProps {
+  readonly greetee: string;
+}
+
+export class Greeter {
+  private readonly greetee: string;
+
+  public constructor(props: GreeterProps) {
+    this.greetee = props.greetee;
+  }
+
+  public greet(): string {
+    return `Hello, ${this.greetee}!`;
+  }
+
+  public prettyGreet(): string {
+    return figlet.textSync(`Hello, ${this.greetee}!`, {
+      font: "Ghost",
+      horizontalLayout: "default",
+      verticalLayout: "default",
+      width: 80,
+      whitespaceBreak: true,
+    });
+  }
+}
+```
+
+Rebuild and repackage the library using npm, and reinstall the Python wheel file:
+
+```bash
+npm run build && npm run package
+pip install --force-reinstall targets/python/jsii_demo.core-1.0.0-py3-none-any.whl
+```
+
+Finally, modify the `test.py` file to use `prettyGreet` for formatted output:
+
+```python
+from jsii_demo.core import Greeter
+
+greeter = Greeter(greetee="Kevin")
+
+print(greeter.prettyGreet())
+# Output:
+#  ('-. .-.   ('-.                                          
+# ( OO )  / _(  OO)                                         
+# ,--. ,--.(,------.,--.      ,--.      .-'),-----.         
+# |  | |  | |  .---'|  |.-')  |  |.-') ( OO'  .-.  '        
+# |   .|  | |  |    |  | OO ) |  | OO )/   |  | |  |        
+# |       |(|  '--. |  |`-' | |  |`-' |\_) |  |\|  |        
+# |  .-.  | |  .--'(|  '---.'(|  '---.'  \ |  | |  |        
+# |  | |  | |  `---.|      |  |      |    `'  '-'  '.-.     
+# `--' `--' `------'`------'  `------'      `-----' ',/     
+# .-. .-')     ('-.        (`-.                .-') _ ,---. 
+# \  ( OO )  _(  OO)     _(OO  )_             ( OO ) )|   | 
+# ,--. ,--. (,------.,--(_/   ,. \ ,-.-') ,--./ ,--,' |   | 
+# |  .'   /  |  .---'\   \   /(__/ |  |OO)|   \ |  |\ |   | 
+# |      /,  |  |     \   \ /   /  |  |  \|    \|  | )|   | 
+# |     ' _)(|  '--.   \   '   /,  |  |(_/|  .     |/ |  .' 
+# |  .   \   |  .--'    \     /__),|  |_.'|  |\    |  `--'  
+# |  |\   \  |  `---.    \   /   (_|  |   |  | \   |  .--.  
+# `--' '--'  `------'     `-'      `--'   `--'  `--'  '--' 
+``` 
+
+And that’s it! You’ve successfully used an npm package in a JSII project and executed it in a Python environment! 🎉
+
+### Conclusion
+
+JSII enables TypeScript libraries to be published in multiple ecosystems while maintaining consistent functionality and user experience. It is an excellent choice for projects requiring multi-language support, such as AWS CDK.
+
+Demo Repo: [GitHub Repository](https://github.com/kevinypfan/jsii-demo)
+
+Feel free to explore and try it out! If you have any questions or suggestions, please open an issue or share your feedback.
