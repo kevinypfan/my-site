@@ -1,0 +1,135 @@
+---
+title: "提升 CPU 密集型任務性能：使用 Rust 為 Python 和 Node.js 加速"
+authors: ['kevinfan']
+date: '2025-01-14'
+tags: ['javascript', 'python', 'rust']
+draft: false
+summary: '利用 Rust 擴展 Python 和 Node.js 的性能，可有效解決 CPU 密集型任務的效能瓶頸。基準測試顯示，Rust 提供最佳性能（503 ms），而透過 NAPI 和 PyO3 的整合，分別將 Node.js 和 Python 的執行效率提升至接近 Rust 的水準。適合對效能要求高的應用場景。'
+language: zh-Hant-TW
+---
+
+
+在開發高運算密集型應用時，性能瓶頸常成為開發者的一大挑戰。本文將探討如何利用 Rust 作為 Python 和 Node.js 的性能擴展，並通過測試結果展示其潛在優勢。
+
+## 測試環境與目標
+
+### 測試目標
+
+評估不同程式語言在執行高運算密集型任務時的效能差異。具體任務為使用 `for loop` 計算從 1 加到 10 億所需的時間。
+
+### 測試環境
+
+- **硬體**：MacBook Pro M3
+- **測試內容**：對比純語言實現與語言擴展實現的性能。
+
+## 測試結果與分析
+
+| 語言/方法          | 時間（毫秒）     |
+|--------------------|-----------------|
+| Pure Python        | 19300.196208   |
+| Pure Node.js       | 13861.808334   |
+| Pure Rust          | 503.900833     |
+| NAPI               | 521.039000     |
+| PyO3               | 5445.831917    |
+
+### 分析
+
+1. **Pure Python**
+    - 執行時間最長，約 19 秒。Python 作為解釋型語言，受 GIL（Global Interpreter Lock）限制，難以高效執行計算密集型任務。
+
+2. **Pure Node.js**
+    - 表現優於 Python，耗時約 13.8 秒，得益於 V8 引擎的 JIT（Just-In-Time）編譯技術。
+
+3. **Pure Rust**
+    - 表現最佳，僅需 503 毫秒。Rust 作為編譯型語言，性能接近原生機器碼，是運算密集型任務的理想選擇。
+
+4. **NAPI**
+    - NAPI 將 Rust 整合至 Node.js，執行時間僅略高於純 Rust，顯示了極高的效能。
+
+5. **PyO3**
+    - PyO3 將 Rust 嵌入 Python，執行時間約為 5.4 秒，比純 Python 快了 3 倍以上，但受 GIL 和 Python 內部機制影響，性能稍低於 NAPI。
+
+## 使用範例程式碼
+
+### Python 測試程式碼
+```python
+import time
+
+def sum_large_numbers(n):
+    total = 0
+    for i in range(1, n+1):
+        total += i
+    return total
+
+def main():
+    start = time.perf_counter()
+    print(sum_large_numbers(1_000_000_000))
+    total_time = time.perf_counter() - start
+    print(f"{total_time * 1000:.6f}ms")
+
+main()
+```
+
+### Node.js 測試程式碼
+```javascript
+function sumLargeNumbers(n) {
+  let total = 0n;
+  for (let i = 1n; i <= n; i++) {
+    total += i;
+  }
+  return total;
+}
+
+function main() {
+  const start = process.hrtime();
+  const result = sumLargeNumbers(1_000_000_000n);
+  const elapsed = process.hrtime(start);
+  const elapsedTimeInMs = elapsed[0] * 1000 + elapsed[1] / 1e6;
+  console.log(result.toString());
+  console.log(`${elapsedTimeInMs.toFixed(6)}ms`);
+}
+
+main();
+```
+
+### Rust 測試程式碼
+```rust
+use std::time::Instant;
+
+fn sum_large_numbers(n: i64) -> i64 {
+    let mut total: i64 = 0;
+    for i in 1..=n {
+        total += i;
+    }
+    total
+}
+
+fn main() {
+    let start = Instant::now();
+    println!("{}", sum_large_numbers(1_000_000_000));
+    let total_time = start.elapsed();
+    println!("{:?}", total_time);
+}
+```
+
+### Benchmark Source Code Repository
+
+本次測試的完整原始碼與更多細節，請參考 [GitHub 專案](https://github.com/kevinypfan/cross-runtime-bench)。
+
+## 結論與建議
+
+1. **效能總結**
+    - Rust 擁有絕對的性能優勢。
+    - NAPI 和 PyO3 作為擴展，能顯著提升 Python 和 Node.js 的運算效率。
+
+2. **應用建議**
+    - 計算密集型應用應考慮使用 Rust 或透過 NAPI/PyO3 整合 Rust。
+    - 快速開發場景下可選擇 Node.js 或 Python，並使用擴展工具提升性能。
+
+3. **未來方向**
+    - 測試其他優化技術，如 Cython 或 PyPy。
+    - 評估多執行緒與多進程模型在不同語言下的效能。
+    - 探索不同硬體對測試結果的影響。
+
+歡迎大家在實際應用中嘗試這些技術，並分享您的經驗與改進建議！
+
